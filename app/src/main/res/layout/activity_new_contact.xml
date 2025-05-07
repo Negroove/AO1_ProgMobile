@@ -19,7 +19,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etFirstName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLength="30"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- txt apellido -->
@@ -36,7 +37,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etLastName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLength="30"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- txt telefono -->
@@ -53,7 +55,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPhone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLength="30"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +75,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etAddress"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLength="30"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

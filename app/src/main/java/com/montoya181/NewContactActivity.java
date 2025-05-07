@@ -47,6 +47,11 @@ public class NewContactActivity extends AppCompatActivity {
                 return;
             }
 
+            if (phone.isEmpty()) {
+                etPhone.setError("Requerido");
+                return;
+            }
+
             // Determino el genero
             int idSelec  = rgGender.getCheckedRadioButtonId();
             String gender = idSelec  == R.id.rbMale   ? "Masculino"
