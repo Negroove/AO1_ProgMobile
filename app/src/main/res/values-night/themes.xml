@@ -2,6 +2,10 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.AO1_ProgMobile" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
 </resources>

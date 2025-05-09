@@ -1,9 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.AO1_ProgMobile" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryContainer">@color/colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
     </style>
 
+    <!-- Tema “final” que usa el base -->
     <style name="Theme.AO1_ProgMobile" parent="Base.Theme.AO1_ProgMobile" />
 </resources>
