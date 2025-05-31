@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -77,5 +81,44 @@ public class ContactsActivity extends AppCompatActivity {
                         new Intent(this, NewContactActivity.class)
                 )
         );
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_contacts, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Cerrar sesión")
+                    .setMessage("¿Estás seguro que queres cerrar sesión?")
+                    .setPositiveButton("Si", (dialog, which) -> {
+
+                            // toast para mostrar que esta cerrando sesion
+                            Toast.makeText(this, "Cerrando sesión", Toast.LENGTH_SHORT).show();
+
+                            // invalido la sesion
+                            getSharedPreferences("ao1_prefs", MODE_PRIVATE)
+                                    .edit()
+                                    .putBoolean("key_authenticated", false)
+                                    .apply();
+
+                            // vuelvo a login
+                            Intent i = new Intent(this, LoginActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+        })
+                    .setNegativeButton("No",(dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
