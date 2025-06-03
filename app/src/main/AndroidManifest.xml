@@ -15,6 +15,7 @@
         <activity
             android:name=".ContactsActivity"
             android:exported="false" />
+        <activity android:name=".ContactDetailActivity" />
         <activity
             android:name=".NewContactActivity"
             android:exported="false" />

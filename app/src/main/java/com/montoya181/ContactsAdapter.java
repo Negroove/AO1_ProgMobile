@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.montoya181.domain.Contact;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +19,10 @@ public class ContactsAdapter
         extends RecyclerView.Adapter<ContactsAdapter.ViewHolder>
         implements Filterable {
 
-    private List<String> originalList;
-    private List<String> filteredList;
+    private List<Contact> originalList;
+    private List<Contact> filteredList;
 
-    public ContactsAdapter(List<String> contacts) {
+    public ContactsAdapter(List<Contact> contacts) {
         this.originalList = contacts;
         this.filteredList = new ArrayList<>(contacts);
     }
@@ -33,11 +35,11 @@ public class ContactsAdapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String item = filteredList.get(position);
-        String[] parts = item.split(" • ", 2);
-        holder.name.setText(parts[0]);
-        holder.phone.setText(parts.length > 1 ? parts[1] : "");    }
+    public void onBindViewHolder(ViewHolder h, int pos) {
+        Contact c = filteredList.get(pos);
+        h.name.setText(String.format("%s %s", c.getFirstName(), c.getLastName()));
+        h.phone.setText(c.getPhone());
+    }
 
     @Override
     public int getItemCount() {
@@ -50,13 +52,14 @@ public class ContactsAdapter
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String query = constraint.toString().toLowerCase().trim();
-                List<String> result = new ArrayList<>();
+                List<Contact> result = new ArrayList<>();
                 if (query.isEmpty()) {
                     result.addAll(originalList);
                 } else {
-                    for (String name : originalList) {
-                        if (name.toLowerCase().contains(query)) {
-                            result.add(name);
+                    for (Contact c : originalList) {
+                        String fullName = (c.getFirstName() + " " + c.getLastName()).toLowerCase();
+                        if (fullName.toLowerCase().contains(query)) {
+                            result.add(c);
                         }
                     }
                 }
@@ -68,8 +71,7 @@ public class ContactsAdapter
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 filteredList.clear();
-                //noinspection unchecked
-                filteredList.addAll((List<String>) results.values);
+                filteredList.addAll((List<Contact>) results.values);
                 notifyDataSetChanged();
             }
         };
@@ -84,9 +86,9 @@ public class ContactsAdapter
         }
     }
 
-    public void addContact(String displayName){
-        originalList.add(displayName);
-        filteredList.add(displayName);
+    public void addContact(Contact c){
+        originalList.add(c);
+        filteredList.add(c);
         notifyItemInserted(filteredList.size() -1);
     }
 }

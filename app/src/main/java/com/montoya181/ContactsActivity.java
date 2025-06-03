@@ -1,5 +1,7 @@
 package com.montoya181;
 
+import com.montoya181.data.ContactRepository;
+import com.montoya181.domain.Contact;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -28,6 +30,7 @@ public class ContactsActivity extends AppCompatActivity {
 
     private RecyclerView rvContacts;
     private ContactsAdapter adapter;
+    private ContactRepository repo;
     private ActivityResultLauncher<Intent> newContactLauncher;  // launcher para recibir resultados
 
     @Override
@@ -37,12 +40,22 @@ public class ContactsActivity extends AppCompatActivity {
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Intent data = result.getData();
-                        String fn    = data.getStringExtra("first_name");
-                        String ln    = data.getStringExtra("last_name");
-                        String phone = data.getStringExtra("phone");
-                        // Construir el string que se mostrará en la lista
-                        String display = fn + " " + ln + " • " + phone;
-                        adapter.addContact(display);
+
+                        long   id      = data.getLongExtra("id", -1L);
+                        String fn      = data.getStringExtra("first_name");
+                        String ln      = data.getStringExtra("last_name");
+                        String phone   = data.getStringExtra("phone");
+                        String address = data.getStringExtra("address");
+                        String gender  = data.getStringExtra("gender");
+
+                        //Creamos contact
+                        Contact c = new Contact(id, fn, ln, phone, address, gender);
+
+
+                        long newId = repo.insert(c);
+
+                        c.setId(newId);
+                        adapter.addContact(c);
                         rvContacts.scrollToPosition(adapter.getItemCount() - 1);
                     }
                 }
@@ -57,13 +70,14 @@ public class ContactsActivity extends AppCompatActivity {
         rvContacts = findViewById(R.id.rvContacts);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
-        List<String> dummy = new ArrayList<>(Arrays.asList(
-                "Ana • 555-1234",
-                "Bruno • 666-5678",
-                "Carla • 777-9012",
-                "David • 888-3456"
-        ));
-        adapter = new ContactsAdapter(dummy);
+
+        repo = new ContactRepository(this);
+
+        // obtengo los contactos de la base de datos
+        List<Contact> allContacts = repo.getAll();
+
+        // creo un adapter
+        adapter = new ContactsAdapter(allContacts);
         rvContacts.setAdapter(adapter);
 
         EditText etFilter = findViewById(R.id.etFilter);
