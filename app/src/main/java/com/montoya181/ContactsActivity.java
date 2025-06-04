@@ -80,14 +80,6 @@ public class ContactsActivity extends AppCompatActivity {
         adapter = new ContactsAdapter(allContacts);
         rvContacts.setAdapter(adapter);
 
-        EditText etFilter = findViewById(R.id.etFilter);
-        etFilter.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override public void afterTextChanged(Editable s) { }
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter.getFilter().filter(s.toString());
-            }
-        });
 
         FloatingActionButton fab = findViewById(R.id.fabAddContact);
         fab.setOnClickListener(v ->
@@ -100,6 +92,23 @@ public class ContactsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_contacts, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        androidx.appcompat.widget.SearchView searchView =
+                (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // No hace nada extra al enviar; dejamos el filtrado en onQueryTextChange
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return true;
+            }
+        });
         return true;
     }
 
@@ -107,11 +116,6 @@ public class ContactsActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
 
-        List<Contact> updatedList = repo.getAll();
-
-        adapter = new ContactsAdapter(updatedList);
-
-        rvContacts.setAdapter(adapter);
     }
 
     @Override

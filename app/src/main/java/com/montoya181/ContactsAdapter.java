@@ -56,20 +56,21 @@ public class ContactsAdapter
     public int getItemCount() {
         return filteredList.size();
     }
-
     @Override
     public Filter getFilter() {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                String query = constraint.toString().toLowerCase().trim();
+                String query = (constraint == null ? "" : constraint.toString().toLowerCase().trim());
                 List<Contact> result = new ArrayList<>();
                 if (query.isEmpty()) {
                     result.addAll(originalList);
                 } else {
                     for (Contact c : originalList) {
                         String fullName = (c.getFirstName() + " " + c.getLastName()).toLowerCase();
-                        if (fullName.toLowerCase().contains(query)) {
+                        String phone = c.getPhone().toLowerCase();
+
+                        if (fullName.contains(query) || phone.contains(query)) {
                             result.add(c);
                         }
                     }
@@ -80,6 +81,7 @@ public class ContactsAdapter
             }
 
             @Override
+            @SuppressWarnings("unchecked")
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 filteredList.clear();
                 filteredList.addAll((List<Contact>) results.values);
