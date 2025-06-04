@@ -100,7 +100,6 @@ public class ContactsActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // No hace nada extra al enviar; dejamos el filtrado en onQueryTextChange
                 return false;
             }
             @Override
@@ -113,9 +112,17 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
 
+        List<Contact> updatedList = repo.getAll();
+
+        if (adapter != null) {
+            adapter.updateList(updatedList);
+        } else {
+            adapter = new ContactsAdapter(updatedList);
+            rvContacts.setAdapter(adapter);
+        }
     }
 
     @Override

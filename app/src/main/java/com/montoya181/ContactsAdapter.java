@@ -104,4 +104,14 @@ public class ContactsAdapter
         filteredList.add(c);
         notifyItemInserted(filteredList.size() -1);
     }
+
+    public void updateList(List<Contact> newContacts) {
+        originalList.clear();
+        originalList.addAll(newContacts);
+
+        filteredList.clear();
+        filteredList.addAll(newContacts);
+
+        notifyDataSetChanged();
+    }
 }
