@@ -104,6 +104,17 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume(){
+        super.onResume();
+
+        List<Contact> updatedList = repo.getAll();
+
+        adapter = new ContactsAdapter(updatedList);
+
+        rvContacts.setAdapter(adapter);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
 

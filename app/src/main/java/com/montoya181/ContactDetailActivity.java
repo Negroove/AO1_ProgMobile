@@ -82,38 +82,28 @@ public class ContactDetailActivity extends AppCompatActivity {
     // capturo el momento de la edicion
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1234 && resultCode == RESULT_OK && data != null) {
-
             String fn      = data.getStringExtra("first_name");
             String ln      = data.getStringExtra("last_name");
             String phone   = data.getStringExtra("phone");
             String address = data.getStringExtra("address");
             String gender  = data.getStringExtra("gender");
 
-            // actualizo el objeto
             contact.setFirstName(fn);
             contact.setLastName(ln);
             contact.setPhone(phone);
             contact.setAddress(address);
             contact.setGender(gender);
 
-            // hago el update
             int rows = repo.update(contactId, contact);
             if (rows > 0) {
                 Toast.makeText(this, "Contacto actualizado", Toast.LENGTH_SHORT).show();
-                // vuelvo a mostrar datos
-                MaterialTextView tvName    = findViewById(R.id.tvDetailName);
-                MaterialTextView tvPhone   = findViewById(R.id.tvDetailPhone);
-                MaterialTextView tvAddress = findViewById(R.id.tvDetailAddress);
-                MaterialTextView tvGender  = findViewById(R.id.tvDetailGender);
-                tvName.setText(fn + " " + ln);
-                tvPhone.setText("Teléfono: " + phone);
-                tvAddress.setText("Dirección: " + address);
-                tvGender.setText("Género: " + gender);
+                // cierro el activity para volver a la lista
+                finish();
             } else {
                 Toast.makeText(this, "Error al actualizar", Toast.LENGTH_SHORT).show();
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 }

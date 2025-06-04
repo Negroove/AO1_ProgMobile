@@ -1,5 +1,6 @@
 package com.montoya181; // usa tu propio paquete
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,9 @@ public class ContactsAdapter
     private List<Contact> originalList;
     private List<Contact> filteredList;
 
+    public interface OnContactClickListener{
+        void onEditContact(Contact c);
+    }
     public ContactsAdapter(List<Contact> contacts) {
         this.originalList = contacts;
         this.filteredList = new ArrayList<>(contacts);
@@ -39,6 +43,13 @@ public class ContactsAdapter
         Contact c = filteredList.get(pos);
         h.name.setText(String.format("%s %s", c.getFirstName(), c.getLastName()));
         h.phone.setText(c.getPhone());
+
+        h.itemView.setOnClickListener(v -> {
+            Intent i = new Intent(v.getContext(), ContactDetailActivity.class);
+            i.putExtra("contact_id",c.getId());
+            v.getContext().startActivity(i);
+        });
+
     }
 
     @Override
